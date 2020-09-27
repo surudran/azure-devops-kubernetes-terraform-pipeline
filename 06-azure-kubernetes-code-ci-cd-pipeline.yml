@@ -67,4 +67,4 @@ stages:
         kubernetesServiceConnection: 'azure-kubernetes-connection'
         namespace: 'default'
         manifests: '$(System.ArtifactsDirectory)/configuration/kubernetes/deployment.yaml'
-        containers: 'surahegoes/currency-exchange-devops:$(tag)'
+        containers: 'in28min/currency-exchange-devops:$(tag)'

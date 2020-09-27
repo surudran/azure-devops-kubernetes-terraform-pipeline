@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - master
 
@@ -14,9 +9,11 @@ variables:
   #'$(Build.BuildId)'
 
 stages:
-# Stage1
+
+# Stage 1
 # Build Docker Image
 # Publish the K8S Files
+
 - stage: Build
   displayName: Build image
   jobs:  
@@ -26,10 +23,9 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     # - task: Docker@2
-    #   displayName: Build an image
     #   inputs:
-    #     containerRegistry: 'surahegoesdocker'
-    #     repository: 'surahegoes/currency-exchange-devops'
+    #     containerRegistry: 'in28min-docker-hub'
+    #     repository: 'in28min/currency-exchange-devops'
     #     command: 'buildAndPush'
     #     Dockerfile: '**/Dockerfile'
     #     tags: '$(tag)'
@@ -43,10 +39,6 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'manifests'
         publishLocation: 'Container'
-
-# Stage2
-# Download the K8S Files
-# Deploy to K8S Cluster with Docker Image
 - stage: Deploy
   displayName: Deploy image
   jobs:  
@@ -68,3 +60,6 @@ stages:
         namespace: 'default'
         manifests: '$(System.ArtifactsDirectory)/configuration/kubernetes/deployment.yaml'
         containers: 'in28min/currency-exchange-devops:$(tag)'
+# Stage 2
+# Download the K8S Files
+# Deploy to K8S Cluster with Docker Image

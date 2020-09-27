@@ -13,10 +13,25 @@ steps:
     secureFile: 'azure_rsa.pub'
 - task: TerraformCLI@0
   inputs:
+    command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/configuration/iaac/azure/kubernetes'
+    commandOptions: '-var client_id=$(client_id) -var client_secret=$(client_secret) -var ssh_public_key=$(publickey.secureFilePath)'
+    backendType: 'azurerm'
+    backendServiceArm: 'Pay-As-You-Go(cda2b3eb-9a9e-4894-95a8-2584e8322353)'
+    ensureBackend: true
+    backendAzureRmResourceGroupName: 'terraform-backend-rg'
+    backendAzureRmResourceGroupLocation: 'canadacentral'
+    backendAzureRmStorageAccountName: 'storageacctsura'
+    backendAzureRmContainerName: 'storageacctsuracontainer'
+    backendAzureRmKey: 'kubernetes_dev.tfstate'
+    allowTelemetryCollection: false
+    
+
+- task: TerraformCLI@0
+  inputs:
     command: 'apply'
     workingDirectory: '$(System.DefaultWorkingDirectory)/configuration/iaac/azure/kubernetes'
     environmentServiceName: 'azure-resource-manager-service-connection'
     commandOptions: '-var client_id=$(client_id) -var client_secret=$(client_secret) -var ssh_public_key=$(publickey.secureFilePath)'
-    allowTelemetryCollection: true
-    
-    
+    allowTelemetryCollection: false
+  
